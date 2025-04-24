@@ -2,8 +2,8 @@ package org.skypro.skyshop.product;
 
 public class Product {
 
-    private String productName;
-    private int costOfProduct;
+    private final String productName;
+    private final int costOfProduct;
 
     public String getProductName() {
         return productName;
@@ -22,7 +22,7 @@ public class Product {
     public String toString() {
         return
                 '<' + productName + '>' +
-                ": <" + costOfProduct +" руб."+
-                '>';
+                        ": <" + costOfProduct + " руб." +
+                        '>';
     }
 }

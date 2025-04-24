@@ -2,9 +2,11 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
- public class ProductBasket {
-    private final Product[] products ;
-    private int size ;
+import static java.lang.System.*;
+
+public class ProductBasket {
+    private final Product[] products;
+    private int size;
 
     public ProductBasket() {
         this.products = new Product[5];
@@ -12,43 +14,62 @@ import org.skypro.skyshop.product.Product;
     }
 
 
-     public void addProduct(Product product){
-        if(size<products.length){
-            products[size]=product;
+    public void addProduct(Product product) {
+        if (size < products.length) {
+            products[size] = product;
             size++;
         } else {
-            System.out.println("Для этого продукта нет места.");
+            out.println("В корзине занятых мест: " + size + "/" + products.length + " Для этого продукта нет места.");
         }
     }
-    public int totalCostOfBasket(){
+
+    public int totalCostOfBasket() {
 
         int totalCost = 0;
-        for (Product product:products){
-            if (product!=null) {
+        for (Product product : products) {
+            if (product != null) {
                 totalCost += product.getCostOfProduct();
             }
-        } return totalCost;
+        }
+        return totalCost;
     }
 
-    public void printBasket(){
-        if (size ==0){
-            System.out.println(" В корзине пусто.");
+    public void printBasket() {
+        if (size == 0) {
+            out.println("В корзине пусто.");
             return;
         }
-        System.out.println(" Сейчас в корзине: " );
-        for (int i = 0; i<size; i++){
-           Product product =products[i];
-            System.out.println(product);
+        out.println(" \nСейчас в корзине: ");
+        for (int i = 0; i < size; i++) {
+            Product product = products[i];
+            out.println(product);
         }
-        System.out.println("Итого: <"+totalCostOfBasket()+" руб.>");
+        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Занятых мест: " + size + "/" + products.length);
     }
 
-    public boolean checkingProductAvailable(String name){
-        for (int i = 0; i<size; i++){
-            if (products[i].getProductName().equals(name)){
+    public void printBasketWithoutCost() {
+        if (size == 0) {
+            out.println("В корзине пусто.");
+            return;
+        }
+        out.println(" \nСейчас в корзине: ");
+        for (int i = 0; i < size; i++) {
+            Product product = products[i];
+            out.println(product.getProductName());
+        }
+    }
+
+    public void printTotalCostOfBasket() {
+        out.println("Стоимость корзины = " + totalCostOfBasket() + " руб.");
+    }
+
+    public boolean checkingProductAvailable(String name) {
+        for (int i = 0; i < size; i++) {
+            if (products[i].getProductName().equals(name)) {
                 return true;
             }
-        } return false;
+        }
+        return false;
     }
 
     public void clearBasket() {
@@ -57,4 +78,14 @@ import org.skypro.skyshop.product.Product;
         }
         size = 0;
     }
+
+    public void printCheckingProductAvailable(String name) {
+        if (checkingProductAvailable(name)) {
+            out.println("Продукт <" + name + "> найден в корзине");
+
+            return;
+        }
+        out.println("Продукт <" + name + "> в корзине не найден");
+    }
+
 }
