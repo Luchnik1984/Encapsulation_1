@@ -1,6 +1,6 @@
 package org.skypro.skyshop.basket;
 
-import org.skypro.skyshop.product.DiscountedProduct;
+
 import org.skypro.skyshop.product.Product;
 
 import static java.lang.System.*;
