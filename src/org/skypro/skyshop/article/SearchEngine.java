@@ -42,5 +42,30 @@ public class SearchEngine {
             }
         }
     }
+
+    public Searchable findBestSearchResult(String search) {
+        Searchable bestSearchResult = null;
+        int maxCount = 0;
+        for (int i = 0; i < this.size; i++) {
+            if (this.searchables[i] != null &&
+                    this.searchables[i].getSearchTerm() != null) {
+                String str = this.searchables[i].getSearchTerm().toLowerCase();
+                String substring = search.toLowerCase();
+                int count = 0;
+                int index = 0;
+                int indexSubstring = str.indexOf(substring, index);
+                while (indexSubstring != -1) {
+                    count++;
+                    index = indexSubstring + substring.length();
+                    indexSubstring = str.indexOf(substring, index);
+                }
+                if (count > maxCount) {
+                    maxCount = count;
+                    bestSearchResult = this.searchables[i];
+                }
+            }
+        }
+        return bestSearchResult;
+    }
 }
 
