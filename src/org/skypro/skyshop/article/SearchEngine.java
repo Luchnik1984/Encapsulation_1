@@ -1,5 +1,7 @@
 package org.skypro.skyshop.article;
 
+import org.skypro.skyshop.exeptions.BestResultNotFound;
+
 public class SearchEngine {
 
     private final Searchable[] searchables;
@@ -43,7 +45,7 @@ public class SearchEngine {
         }
     }
 
-    public Searchable findBestSearchResult(String search) {
+    public Searchable findBestSearchResult(String search) throws BestResultNotFound {
         Searchable bestSearchResult = null;
         int maxCount = 0;
         for (int i = 0; i < this.size; i++) {
@@ -65,7 +67,12 @@ public class SearchEngine {
                 }
             }
         }
+        if (bestSearchResult == null) {
+            throw new BestResultNotFound(search);
+        }
         return bestSearchResult;
     }
 }
+
+
 

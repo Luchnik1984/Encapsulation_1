@@ -6,10 +6,10 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String productName, int basePrice, int discountInWholePercentages) {
         super(productName);
-        if (basePrice<=0) {
+        if (basePrice <= 0) {
             throw new IllegalArgumentException("Цена продукта не является положительным числом. Недопустимая цена!");
         }
-        if (discountInWholePercentages<0||discountInWholePercentages>100){
+        if (discountInWholePercentages < 0 || discountInWholePercentages > 100) {
             throw new IllegalArgumentException("Введён недопустимый процент скидки!");
         }
         this.basePrice = basePrice;

@@ -4,11 +4,11 @@ import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.article.SearchEngine;
 import org.skypro.skyshop.article.Searchable;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.exeptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
-
 
 
 public class App {
@@ -101,9 +101,9 @@ public class App {
 
         System.out.println("\nДЗ_4. 1,2 Проверка полей товаров: ");
 
-        Product incorrectProduct1 = null;
+
         try {
-            incorrectProduct1 = new SimpleProduct("", 300);
+            Product incorrectProduct1 = new SimpleProduct("", 300);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании продукта: " + e.getMessage());
         }
@@ -126,10 +126,25 @@ public class App {
             System.out.println("Ошибка при создании продукта: " + e.getMessage());
 
         }
-        System.out.println("\nДЗ_4. 3,4,5 Реализация метода поиска самого подходящего элемента, когда нужный объект существует: ");
-        Searchable bestResult= searchProduct.findBestSearchResult("яблок");
-        System.out.println(bestResult);
+        System.out.println("\nДЗ_4. 3,4,5 Реализация метода поиска самого подходящего элемента:");
+        try {
+            SearchEngine searchEngine2 = new SearchEngine(5);
+            searchEngine2.add(product1);
+            searchEngine2.add(product2);
+            searchEngine2.add(product3);
+            searchEngine2.add(article1);
+            searchEngine2.add(article4);
 
+            System.out.println(" \n5.1 когда нужный объект существует: ");
+            Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");
+            System.out.println(bestResult1);
+
+            System.out.println(" \n5.2 когда метод выбрасывает исключение: ");
+            Searchable bestResult2 = searchEngine2.findBestSearchResult("яблонь");
+            System.out.println(bestResult2);
+        } catch (BestResultNotFound e) {
+            System.err.println(e.getMessage());
+        }
 
     }
 }
