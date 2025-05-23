@@ -10,6 +10,8 @@ import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
+import java.util.List;
+
 
 public class App {
     public static void main(String[] args) {
@@ -21,7 +23,7 @@ public class App {
         FixPriceProduct product6 = new FixPriceProduct("молоко");
 
         ProductBasket basket1 = new ProductBasket(); // Создаём корзину
-        System.out.println("\n1. Добавление продукта в корзину");
+        System.out.println("\n1. Добавление продукта в корзину:");
         basket1.addProduct(product1);
         basket1.printBasket();
 
@@ -31,9 +33,6 @@ public class App {
         basket1.addProduct(product5);
 
         basket1.printBasket();
-
-        System.out.println("\n2. Добавление продукта в заполненную корзину, в которой нет свободного места");
-        basket1.addProduct(product6);
 
         System.out.println("\n3. Печать содержимого корзины с несколькими товарами");
         basket1.printBasketWithoutCost();
@@ -74,7 +73,7 @@ public class App {
 
         System.out.println("\n  ДЗ_4. Добавление статей и поиска. Проверка введённых изменений ");
 
-        SearchEngine searchProduct = new SearchEngine(5);
+        SearchEngine searchProduct = new SearchEngine();
         searchProduct.add(product1);
         searchProduct.add(product3);
         searchProduct.add(product4);
@@ -88,15 +87,15 @@ public class App {
         searchProduct.add(article4);
 
         System.out.println("\n<<< Результат поиска по запросу 'яблоки' >>>");
-        Searchable[] result1 = searchProduct.search("яблоки");
+        List<Searchable> result1 = searchProduct.search("яблоки");
         searchProduct.printResults(result1);
 
         System.out.println("\n<<< Результат поиска по запросу 'колбаса' >>>");
-        Searchable[] result2 = searchProduct.search("колбаса");
+        List<Searchable> result2 = searchProduct.search("колбаса");
         searchProduct.printResults(result2);
 
         System.out.println("\n<<< Результат поиска по запросу 'хлеб' >>>");
-        Searchable[] result3 = searchProduct.search("хлеб");
+        List<Searchable> result3 = searchProduct.search("хлеб");
         searchProduct.printResults(result3);
 
         System.out.println("\nДЗ_4. 1,2 Проверка полей товаров: ");
@@ -126,14 +125,48 @@ public class App {
             System.out.println("Ошибка при создании продукта: " + e.getMessage());
 
         }
-        System.out.println("\nДЗ_4. 3,4,5 Реализация метода поиска самого подходящего элемента:");
+
+        System.out.println("""
+                
+                ДЗ_5. 2 Демонстрация метода удаления продукта по имени из корзины:\
+                
+                Создаём новую корзину и заполняем её тестовыми продуктами:""");
+        ProductBasket basket3 = new ProductBasket();
+        basket3.addProduct(product1);
+        basket3.addProduct(product2);
+        basket3.addProduct(product3);
+        basket3.addProduct(product4);
+        basket3.addProduct(product5);
+        basket3.addProduct(product6);
+        basket3.printBasket();
+        System.out.println("\n5.2.1 Удаляем существующий продукт:");
+        List<Product> removedProducts1 = basket3.removedProductsByName("колбаса");
+
+        System.out.println("\n5.2.2 Выводим удалённый продукт:");
+        basket3.printRemovedProducts(removedProducts1);
+
+        System.out.println("\n5.2.3 Выводим содержимое корзины:");
+        basket3.printBasket();
+
+        System.out.println("\n5.2.4 Удаляем несуществующий продукт:");
+        List<Product> removedProducts2 = basket3.removedProductsByName("горох");
+
+        System.out.println("\n5.2.5 Выводим удалённый продукт. Проверка что список пуст:");
+        basket3.printRemovedProducts(removedProducts2);
+
+        System.out.println("\n5.2.6 Выводим содержимое корзины:");
+        basket3.printBasket();
+
+        System.out.println("\nДЗ_5.3 Реализация метода поиска самого подходящего элемента через список (List): ");
+
         try {
-            SearchEngine searchEngine2 = new SearchEngine(5);
+            SearchEngine searchEngine2 = new SearchEngine();
             searchEngine2.add(product1);
             searchEngine2.add(product2);
             searchEngine2.add(product3);
             searchEngine2.add(article1);
             searchEngine2.add(article4);
+            searchEngine2.add(product6);
 
             System.out.println(" \n5.1 когда нужный объект существует: ");
             Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");
@@ -143,8 +176,7 @@ public class App {
             Searchable bestResult2 = searchEngine2.findBestSearchResult("яблонь");
             System.out.println(bestResult2);
         } catch (BestResultNotFound e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
-
     }
 }

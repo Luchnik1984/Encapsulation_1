@@ -2,42 +2,33 @@ package org.skypro.skyshop.article;
 
 import org.skypro.skyshop.exeptions.BestResultNotFound;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchEngine {
 
-    private final Searchable[] searchables;
-    private int size;
+    private final List<Searchable> searchables = new ArrayList<>();
 
-    public SearchEngine(int capacity) {
-        this.searchables = new Searchable[capacity];
-        this.size = 0;
+
+    public void add(Searchable searchable) {
+        searchables.add(searchable);
     }
 
-    public Searchable[] search(String searchTerm) {
-        Searchable[] results = new Searchable[5];
-        int resultCount = 0;
 
-        for (int i = 0; i < this.size; i++) {
-            if (this.searchables[i] != null &&
-                    this.searchables[i].getSearchTerm() != null &&
-                    this.searchables[i].getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results[resultCount] = this.searchables[i];
-                resultCount++;
-                if (resultCount == 5) {
-                    break;
-                }
+    public List<Searchable> search(String searchTerm) {
+        List<Searchable> results = new ArrayList<>();
+
+        for (Searchable searchable : searchables) {
+            if (searchable != null &&
+                    searchable.getSearchTerm() != null &&
+                    searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
+                results.add(searchable);
             }
         }
         return results;
     }
 
-    public void add(Searchable searchable) {
-        if (this.size < this.searchables.length) {
-            this.searchables[this.size] = searchable;
-            this.size++;
-        }
-    }
-
-    public void printResults(Searchable[] results) {
+    public void printResults(List<Searchable> results) {
         for (Searchable result : results) {
             if (result != null) {
                 System.out.println(result);
@@ -49,13 +40,13 @@ public class SearchEngine {
         Searchable bestSearchResult = null;
         int maxCount = 0;
 
-        for (int i = 0; i < this.size; i++) {
-            if (this.searchables[i] != null && this.searchables[i].getSearchTerm() != null) {
-                int count = countOccurrences(this.searchables[i].getSearchTerm(), search);
+        for (Searchable searchable : searchables) {
+            if (searchable != null && searchable.getSearchTerm() != null) {
+                int count = countOccurrences(searchable.getSearchTerm(), search);
 
                 if (count > maxCount) {
                     maxCount = count;
-                    bestSearchResult = this.searchables[i];
+                    bestSearchResult = searchable;
                 }
             }
         }

@@ -3,42 +3,35 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import static java.lang.System.*;
 
 public class ProductBasket {
-    private final Product[] products;
+    private final List<Product> products = new LinkedList<>();
     private int size;
-
-    public ProductBasket() {
-        this.products = new Product[5];
-        this.size = 0;
-    }
 
 
     public void addProduct(Product product) {
-        if (size < products.length) {
-            products[size] = product;
-            size++;
-        } else {
-            out.println("В корзине занятых мест: " + size + "/" + products.length + " Для этого продукта нет места.");
-        }
-    }
+        products.add(product);
+        size++;
+            }
 
     public int totalCostOfBasket() {
 
         int totalCost = 0;
         for (Product product : products) {
-            if (product != null) {
                 totalCost += product.getCostOfProduct();
-            }
-        }
+                    }
         return totalCost;
     }
 
     public int countingSpecialProduct() {
         int specialCount = 0;
         for (Product product : products) {
-            if (product != null && product.isSpecial()) {
+            if (product.isSpecial()) {
                 specialCount++;
             }
         }
@@ -51,12 +44,13 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (int i = 0; i < size; i++) {
-            Product product = products[i];
+        for (Product product : products) {
             out.println(product);
         }
-        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Занятых мест: " + size + "/" + products.length +
-                "\nСпециальных товаров: < " + countingSpecialProduct() + " >");
+        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: " + size + " шт.");
+        if (countingSpecialProduct() > 0) {
+            System.out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
+        }
     }
 
     public void printBasketWithoutCost() {
@@ -65,8 +59,7 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (int i = 0; i < size; i++) {
-            Product product = products[i];
+        for (Product product:products) {
             out.println(product.getProductName());
         }
     }
@@ -76,8 +69,8 @@ public class ProductBasket {
     }
 
     public boolean checkingProductAvailable(String name) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getProductName().equals(name)) {
+        for (Product product:products) {
+            if (name.equalsIgnoreCase(product.getProductName())) {
                 return true;
             }
         }
@@ -85,19 +78,42 @@ public class ProductBasket {
     }
 
     public void clearBasket() {
-        for (int i = 0; i < size; i++) {
-            products[i] = null;
-        }
+        products.clear();
         size = 0;
     }
 
     public void printCheckingProductAvailable(String name) {
         if (checkingProductAvailable(name)) {
             out.println("Продукт <" + name + "> найден в корзине");
-
             return;
         }
         out.println("Продукт <" + name + "> в корзине не найден");
+    }
+
+    public List<Product> removedProductsByName(String name){
+        List<Product> removedProducts = new LinkedList<>();
+        Iterator<Product> iterator = products.iterator();
+
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (name.equalsIgnoreCase(product.getProductName())) {
+                iterator.remove();
+                removedProducts.add(product);
+                size--;
+            }
+        }
+        return removedProducts;
+    }
+
+    public void printRemovedProducts(List<Product> products) {
+        if (products.isEmpty()) {
+            System.out.println("Список удалённых`продуктов пуст");
+            return;
+        }
+        System.out.println("Удаленные продукты:");
+        for (Product product : products) {
+            System.out.println(product);
+        }
     }
 
 }
