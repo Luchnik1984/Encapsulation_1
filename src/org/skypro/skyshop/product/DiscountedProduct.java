@@ -6,20 +6,26 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String productName, int basePrice, int discountInWholePercentages) {
         super(productName);
+        if (basePrice <= 0) {
+            throw new IllegalArgumentException("Цена продукта не является положительным числом. Недопустимая цена!");
+        }
+        if (discountInWholePercentages < 0 || discountInWholePercentages > 100) {
+            throw new IllegalArgumentException("Введён недопустимый процент скидки!");
+        }
         this.basePrice = basePrice;
         this.discountInWholePercentages = discountInWholePercentages;
     }
 
     @Override
     public int getCostOfProduct() {
-        return (int)(basePrice*(1-(discountInWholePercentages/100D)));
+        return (int) (basePrice * (1 - (discountInWholePercentages / 100D)));
     }
 
     @Override
     public String toString() {
-        return " < продукт со скидкой: "+super.getProductName()+  " > :" +
-                " < стоимость: "+getCostOfProduct()+ " руб >"+
-                " (< скидка "+discountInWholePercentages+" >%)";
+        return "< продукт со скидкой: " + super.getProductName() + " > :" +
+                " < стоимость: " + getCostOfProduct() + " руб >" +
+                " (< скидка " + discountInWholePercentages + " >%)";
     }
 
     @Override
