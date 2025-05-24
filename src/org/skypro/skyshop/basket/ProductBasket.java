@@ -11,20 +11,18 @@ import static java.lang.System.*;
 
 public class ProductBasket {
     private final List<Product> products = new LinkedList<>();
-    private int size;
 
 
     public void addProduct(Product product) {
         products.add(product);
-        size++;
-            }
+    }
 
     public int totalCostOfBasket() {
 
         int totalCost = 0;
         for (Product product : products) {
-                totalCost += product.getCostOfProduct();
-                    }
+            totalCost += product.getCostOfProduct();
+        }
         return totalCost;
     }
 
@@ -39,7 +37,7 @@ public class ProductBasket {
     }
 
     public void printBasket() {
-        if (size == 0) {
+        if (products.isEmpty()) {
             out.println("В корзине пусто.");
             return;
         }
@@ -47,19 +45,19 @@ public class ProductBasket {
         for (Product product : products) {
             out.println(product);
         }
-        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: " + size + " шт.");
+        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: " + products.size() + " шт.");
         if (countingSpecialProduct() > 0) {
             System.out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
         }
     }
 
     public void printBasketWithoutCost() {
-        if (size == 0) {
+        if (products.isEmpty()) {
             out.println("В корзине пусто.");
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (Product product:products) {
+        for (Product product : products) {
             out.println(product.getProductName());
         }
     }
@@ -69,7 +67,7 @@ public class ProductBasket {
     }
 
     public boolean checkingProductAvailable(String name) {
-        for (Product product:products) {
+        for (Product product : products) {
             if (name.equalsIgnoreCase(product.getProductName())) {
                 return true;
             }
@@ -79,7 +77,6 @@ public class ProductBasket {
 
     public void clearBasket() {
         products.clear();
-        size = 0;
     }
 
     public void printCheckingProductAvailable(String name) {
@@ -90,7 +87,7 @@ public class ProductBasket {
         out.println("Продукт <" + name + "> в корзине не найден");
     }
 
-    public List<Product> removedProductsByName(String name){
+    public List<Product> removedProductsByName(String name) {
         List<Product> removedProducts = new LinkedList<>();
         Iterator<Product> iterator = products.iterator();
 
@@ -99,7 +96,7 @@ public class ProductBasket {
             if (name.equalsIgnoreCase(product.getProductName())) {
                 iterator.remove();
                 removedProducts.add(product);
-                size--;
+
             }
         }
         return removedProducts;

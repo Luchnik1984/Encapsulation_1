@@ -23,7 +23,7 @@ public class DiscountedProduct extends Product {
 
     @Override
     public String toString() {
-        return " < продукт со скидкой: " + super.getProductName() + " > :" +
+        return "< продукт со скидкой: " + super.getProductName() + " > :" +
                 " < стоимость: " + getCostOfProduct() + " руб >" +
                 " (< скидка " + discountInWholePercentages + " >%)";
     }

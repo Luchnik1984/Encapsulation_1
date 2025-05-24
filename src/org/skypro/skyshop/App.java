@@ -87,16 +87,16 @@ public class App {
         searchProduct.add(article4);
 
         System.out.println("\n<<< Результат поиска по запросу 'яблоки' >>>");
-        List<Searchable> result1 = searchProduct.search("яблоки");
-        searchProduct.printResults(result1);
+         searchProduct.search("яблоки");
+
 
         System.out.println("\n<<< Результат поиска по запросу 'колбаса' >>>");
-        List<Searchable> result2 = searchProduct.search("колбаса");
-        searchProduct.printResults(result2);
+        searchProduct.search("колбаса");
+
 
         System.out.println("\n<<< Результат поиска по запросу 'хлеб' >>>");
-        List<Searchable> result3 = searchProduct.search("хлеб");
-        searchProduct.printResults(result3);
+         searchProduct.search("хлеб");
+
 
         System.out.println("\nДЗ_4. 1,2 Проверка полей товаров: ");
 

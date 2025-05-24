@@ -15,26 +15,18 @@ public class SearchEngine {
     }
 
 
-    public List<Searchable> search(String searchTerm) {
-        List<Searchable> results = new ArrayList<>();
+    public void search(String searchTerm) {
+
 
         for (Searchable searchable : searchables) {
             if (searchable != null &&
                     searchable.getSearchTerm() != null &&
                     searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results.add(searchable);
+                System.out.println(searchable);
             }
         }
-        return results;
     }
 
-    public void printResults(List<Searchable> results) {
-        for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result);
-            }
-        }
-    }
 
     public Searchable findBestSearchResult(String search) throws BestResultNotFound {
         Searchable bestSearchResult = null;
