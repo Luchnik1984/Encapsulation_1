@@ -90,15 +90,15 @@ public class App {
         System.out.println("\n<<< Демонстрация метода search >>>");
         System.out.println("\n<<< Результат поиска по запросу 'яблоки' >>>");
 
-        Map<String,Searchable> searchResult1= searchProduct.search("яблоки");
+        Map<String, Searchable> searchResult1 = searchProduct.search("яблоки");
         searchProduct.printResults(searchResult1);
 
         System.out.println("\n<<< Результат поиска по запросу 'колбаса' >>>");
-        Map<String,Searchable> searchResult2= searchProduct.search("колбаса");
+        Map<String, Searchable> searchResult2 = searchProduct.search("колбаса");
         searchProduct.printResults(searchResult2);
 
         System.out.println("\n<<< Результат поиска по запросу 'хлеб' >>>");
-        Map<String,Searchable> searchResult3= searchProduct.search("хлеб");
+        Map<String, Searchable> searchResult3 = searchProduct.search("хлеб");
         searchProduct.printResults(searchResult3);
 
         System.out.println("\n Проверка полей товаров: ");

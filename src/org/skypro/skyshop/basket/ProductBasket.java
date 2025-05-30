@@ -8,7 +8,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class ProductBasket {
-     private final Map<String, List<Product>> products = new HashMap<>();
+    private final Map<String, List<Product>> products = new HashMap<>();
 
 
     public void addProduct(Product product) {

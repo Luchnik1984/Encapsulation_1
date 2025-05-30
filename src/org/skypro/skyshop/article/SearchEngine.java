@@ -18,7 +18,7 @@ public class SearchEngine {
 
 
     public Map<String, Searchable> search(String searchTerm) {
-        Map<String,Searchable> results = new TreeMap<>();
+        Map<String, Searchable> results = new TreeMap<>();
         for (Searchable searchable : searchables) {
             if (searchable != null &&
                     searchable.getSearchTerm() != null &&
@@ -30,16 +30,16 @@ public class SearchEngine {
     }
 
     public void printResults(Map<String, Searchable> results) {
-        int count=0;
-        if (results.isEmpty()){
+        int count = 0;
+        if (results.isEmpty()) {
             count++;
-            System.out.println("Результат поиска №"+count+": Продукт не найден!");
+            System.out.println("Результат поиска №" + count + ": Продукт не найден!");
             return;
         }
 
         for (Map.Entry<String, Searchable> entry : results.entrySet()) {
             count++;
-            System.out.println("Результат поиска №"+count+": "+entry.getKey()+"\n" + entry.getValue());
+            System.out.println("Результат поиска №" + count + ": " + entry.getKey() + "\n" + entry.getValue());
         }
     }
 
