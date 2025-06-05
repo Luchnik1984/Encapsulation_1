@@ -2,34 +2,31 @@ package org.skypro.skyshop.article;
 
 import org.skypro.skyshop.exeptions.BestResultNotFound;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class SearchEngine {
 
-    private final List<Searchable> searchables = new ArrayList<>();
+    private final Set<Searchable> searchables = new HashSet<>();
 
 
     public void add(Searchable searchable) {
         searchables.add(searchable);
-    }
+            }
 
 
-    public Map<String, Searchable> search(String searchTerm) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(String searchTerm) {
+       Set<Searchable> results = new TreeSet<>(new SearchableComparator());
         for (Searchable searchable : searchables) {
             if (searchable != null &&
                     searchable.getSearchTerm() != null &&
                     searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results.put(searchable.getProductName(), searchable);
+                results.add(searchable);
             }
         }
         return results;
     }
 
-    public void printResults(Map<String, Searchable> results) {
+    public void printResults(Set<Searchable> results) {
         int count = 0;
         if (results.isEmpty()) {
             count++;
@@ -37,9 +34,9 @@ public class SearchEngine {
             return;
         }
 
-        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+        for (Searchable result : results) {
             count++;
-            System.out.println("Результат поиска №" + count + ": " + entry.getKey() + "\n" + entry.getValue());
+            System.out.println("Результат поиска №" + count + ": "  + result);
         }
     }
 

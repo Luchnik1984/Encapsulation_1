@@ -8,22 +8,25 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class ProductBasket {
-    private final Map<String, List<Product>> products = new HashMap<>();
+    private final Map<String, Set<Product>> products = new HashMap<>();
 
 
     public void addProduct(Product product) {
         String name = product.getProductName();
         if (!products.containsKey(name)) {
-            products.put(name, new LinkedList<>());
+            products.put(name, new HashSet<>());
+            out.println("Продукт '"+ name +"' Добавлен в корзину");
+
+        } else  {
+            out.println("Продукт '"+ name +"' уже есть в корзине, повторное добавление не выполнено!");
         }
         products.get(name).add(product);
-
     }
 
     public int totalCostOfBasket() {
         int totalCost = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        for (Set<Product> productSet : products.values()) {
+            for (Product product : productSet) {
                 totalCost += product.getCostOfProduct();
             }
         }
@@ -32,8 +35,8 @@ public class ProductBasket {
 
     public int countingSpecialProduct() {
         int specialCount = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        for (Set<Product> productSet : products.values()) {
+            for (Product product : productSet) {
                 if (product.isSpecial()) {
                     specialCount++;
                 }
@@ -49,13 +52,13 @@ public class ProductBasket {
         }
         out.println(" \nСейчас в корзине: ");
 
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        for (Set<Product> productSet : products.values()) {
+            for (Product product : productSet) {
                 out.println(product);
             }
         }
         out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: "
-                + products.values().stream().mapToInt(List::size).sum() + " шт.");
+                + products.values().stream().mapToInt(Set::size).sum() + " шт.");
         if (countingSpecialProduct() > 0) {
             out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
         }
@@ -67,8 +70,8 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        for (Set<Product> productSet : products.values()) {
+            for (Product product : productSet) {
                 out.println(product.getProductName());
             }
         }
@@ -79,8 +82,8 @@ public class ProductBasket {
     }
 
     public boolean checkingProductAvailable(String name) {
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        for (Set<Product> productSet : products.values()) {
+            for (Product product : productSet) {
                 if (name.equalsIgnoreCase(product.getProductName())) {
                     return true;
                 }
@@ -102,12 +105,12 @@ public class ProductBasket {
         out.println("Продукт <" + name + "> в корзине не найден");
     }
 
-    public List<Product> removedProductsByName(String name) {
-        List<Product> removedProducts = new LinkedList<>();
-        Iterator<Map.Entry<String, List<Product>>> iterator = products.entrySet().iterator();
+    public Set<Product> removedProductsByName(String name) {
+        Set<Product> removedProducts = new HashSet<>();
+        Iterator<Map.Entry<String, Set<Product>>> iterator = products.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Map.Entry<String, List<Product>> entry = iterator.next();
+            Map.Entry<String, Set<Product>> entry = iterator.next();
             if (entry.getKey().equalsIgnoreCase(name)) {
                 removedProducts.addAll(entry.getValue());// Добавляем все продукты из совпадения
                 iterator.remove(); // Безопасно удаляем запись
@@ -118,7 +121,7 @@ public class ProductBasket {
         return removedProducts;
     }
 
-    public void printRemovedProducts(List<Product> products) {
+    public void printRemovedProducts(Set<Product> products) {
         if (products.isEmpty()) {
             System.out.println("Список удалённых`продуктов пуст");
             return;
