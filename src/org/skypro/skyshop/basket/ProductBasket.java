@@ -3,34 +3,40 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.System.*;
 
 public class ProductBasket {
-    private final List<Product> products = new LinkedList<>();
+    private final Map<String, List<Product>> products = new HashMap<>();
 
 
     public void addProduct(Product product) {
-        products.add(product);
+        String name = product.getProductName();
+        if (!products.containsKey(name)) {
+            products.put(name, new LinkedList<>());
+        }
+        products.get(name).add(product);
+
     }
 
     public int totalCostOfBasket() {
-
         int totalCost = 0;
-        for (Product product : products) {
-            totalCost += product.getCostOfProduct();
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                totalCost += product.getCostOfProduct();
+            }
         }
         return totalCost;
     }
 
     public int countingSpecialProduct() {
         int specialCount = 0;
-        for (Product product : products) {
-            if (product.isSpecial()) {
-                specialCount++;
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                if (product.isSpecial()) {
+                    specialCount++;
+                }
             }
         }
         return specialCount;
@@ -42,12 +48,16 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (Product product : products) {
-            out.println(product);
+
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                out.println(product);
+            }
         }
-        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: " + products.size() + " шт.");
+        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: "
+                + products.values().stream().mapToInt(List::size).sum() + " шт.");
         if (countingSpecialProduct() > 0) {
-            System.out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
+            out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
         }
     }
 
@@ -57,8 +67,10 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (Product product : products) {
-            out.println(product.getProductName());
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                out.println(product.getProductName());
+            }
         }
     }
 
@@ -67,9 +79,11 @@ public class ProductBasket {
     }
 
     public boolean checkingProductAvailable(String name) {
-        for (Product product : products) {
-            if (name.equalsIgnoreCase(product.getProductName())) {
-                return true;
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                if (name.equalsIgnoreCase(product.getProductName())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -77,6 +91,7 @@ public class ProductBasket {
 
     public void clearBasket() {
         products.clear();
+
     }
 
     public void printCheckingProductAvailable(String name) {
@@ -89,16 +104,17 @@ public class ProductBasket {
 
     public List<Product> removedProductsByName(String name) {
         List<Product> removedProducts = new LinkedList<>();
-        Iterator<Product> iterator = products.iterator();
+        Iterator<Map.Entry<String, List<Product>>> iterator = products.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (name.equalsIgnoreCase(product.getProductName())) {
-                iterator.remove();
-                removedProducts.add(product);
+            Map.Entry<String, List<Product>> entry = iterator.next();
+            if (entry.getKey().equalsIgnoreCase(name)) {
+                removedProducts.addAll(entry.getValue());// Добавляем все продукты из совпадения
+                iterator.remove(); // Безопасно удаляем запись
 
             }
         }
+
         return removedProducts;
     }
 
