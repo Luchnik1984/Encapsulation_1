@@ -10,9 +10,7 @@ import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
-
 import java.util.Set;
-
 
 public class App {
     public static void main(String[] args) {
@@ -70,7 +68,6 @@ public class App {
         basket1.addProduct(product6);
 
         basket1.printBasket();
-
 
         System.out.println("\nДобавление статей и поиска. Тестирование поискового движка ");
 
@@ -161,6 +158,7 @@ public class App {
         basket3.printBasket();
 
         System.out.println("\n<<<Реализация метода поиска самого подходящего элемента>>>");
+        System.out.println("\n <<<Добавляем объекты в поисковый движок>>>");
 
         try {
             SearchEngine searchEngine2 = new SearchEngine();
@@ -171,8 +169,6 @@ public class App {
             searchEngine2.add(article4);
             searchEngine2.add(product6);
             searchEngine2.add(product6);
-
-
 
             System.out.println(" \nКогда нужный объект существует: ");
             Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");

@@ -10,7 +10,15 @@ public class SearchEngine {
 
 
     public void add(Searchable searchable) {
+        if (searchable==null ){
+            System.out.println("Нельзя добавить несуществующий объект!");
+            return;
+        }
+        if (searchables.contains(searchable)){
+            System.out.println("Объект '"+searchable+"' уже добавлен в поисковый движок. Повторное добавление не произведено!");
+        }
         searchables.add(searchable);
+        System.out.println("Объект '"+searchable.getSearchTerm()+ "' добавлен в поисковый движок");
             }
 
 
