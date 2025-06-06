@@ -163,6 +163,10 @@ public class App {
 
         try {
             SearchEngine searchEngine2 = new SearchEngine();
+            // Обработка каждого добавления отдельно:
+            // Объекты для добавления собраны в список
+            //Каждый вызов add() обернут в try-catch
+            //При ошибке добавления одного элемента, продолжается попытка добавить следующие
                         List<Searchable> itemsToAdd = List.of(
                         product1, product2, product3,
                         article1, article1,
