@@ -35,13 +35,14 @@ public class ProductBasket {
         return totalCost;
     }
 
-    public int countingSpecialProduct(){
+    public int countingSpecialProduct() {
         int specialCount = 0;
-        for (Product product:products){
-            if (product!=null&&product.isSpecial()){
+        for (Product product : products) {
+            if (product != null && product.isSpecial()) {
                 specialCount++;
             }
-        }return specialCount;
+        }
+        return specialCount;
     }
 
     public void printBasket() {
@@ -54,8 +55,8 @@ public class ProductBasket {
             Product product = products[i];
             out.println(product);
         }
-        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Занятых мест: " + size + "/" + products.length+
-                "\nСпециальных товаров: < "+countingSpecialProduct()+" >");
+        out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Занятых мест: " + size + "/" + products.length +
+                "\nСпециальных товаров: < " + countingSpecialProduct() + " >");
     }
 
     public void printBasketWithoutCost() {

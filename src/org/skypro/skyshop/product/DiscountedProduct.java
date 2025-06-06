@@ -12,14 +12,14 @@ public class DiscountedProduct extends Product {
 
     @Override
     public int getCostOfProduct() {
-        return (int)(basePrice*(1-(discountInWholePercentages/100D)));
+        return (int) (basePrice * (1 - (discountInWholePercentages / 100D)));
     }
 
     @Override
     public String toString() {
-        return " < продукт со скидкой: "+super.getProductName()+  " > :" +
-                " < стоимость: "+getCostOfProduct()+ " руб >"+
-                " (< скидка "+discountInWholePercentages+" >%)";
+        return " < продукт со скидкой: " + super.getProductName() + " > :" +
+                " < стоимость: " + getCostOfProduct() + " руб >" +
+                " (< скидка " + discountInWholePercentages + " >%)";
     }
 
     @Override
