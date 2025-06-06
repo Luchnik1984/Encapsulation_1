@@ -4,10 +4,11 @@ import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.article.SearchEngine;
 import org.skypro.skyshop.article.Searchable;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.exeptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
-
 
 
 public class App {
@@ -98,6 +99,52 @@ public class App {
         Searchable[] result3 = searchProduct.search("хлеб");
         searchProduct.printResults(result3);
 
+        System.out.println("\nДЗ_4. 1,2 Проверка полей товаров: ");
+
+
+        try {
+            Product incorrectProduct1 = new SimpleProduct("", 300);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+        }
+
+        try {
+            Product incorrectProduct2 = new SimpleProduct("Кефир", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+        }
+
+        try {
+            Product incorrectProduct3 = new DiscountedProduct("   ", 10, 20);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+        }
+
+        try {
+            Product incorrectProduct4 = new DiscountedProduct("Краковская колбаса", 7000, -10);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+
+        }
+        System.out.println("\nДЗ_4. 3,4,5 Реализация метода поиска самого подходящего элемента:");
+        try {
+            SearchEngine searchEngine2 = new SearchEngine(5);
+            searchEngine2.add(product1);
+            searchEngine2.add(product2);
+            searchEngine2.add(product3);
+            searchEngine2.add(article1);
+            searchEngine2.add(article4);
+
+            System.out.println(" \n5.1 когда нужный объект существует: ");
+            Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");
+            System.out.println(bestResult1);
+
+            System.out.println(" \n5.2 когда метод выбрасывает исключение: ");
+            Searchable bestResult2 = searchEngine2.findBestSearchResult("яблонь");
+            System.out.println(bestResult2);
+        } catch (BestResultNotFound e) {
+            System.err.println(e.getMessage());
+        }
 
     }
 }

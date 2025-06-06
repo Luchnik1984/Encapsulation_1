@@ -1,5 +1,7 @@
 package org.skypro.skyshop.article;
 
+import org.skypro.skyshop.exeptions.BestResultNotFound;
+
 public class SearchEngine {
 
     private final Searchable[] searchables;
@@ -42,5 +44,40 @@ public class SearchEngine {
             }
         }
     }
-}
 
+    public Searchable findBestSearchResult(String search) throws BestResultNotFound {
+        Searchable bestSearchResult = null;
+        int maxCount = 0;
+
+        for (int i = 0; i < this.size; i++) {
+            if (this.searchables[i] != null && this.searchables[i].getSearchTerm() != null) {
+                int count = countOccurrences(this.searchables[i].getSearchTerm(), search);
+
+                if (count > maxCount) {
+                    maxCount = count;
+                    bestSearchResult = this.searchables[i];
+                }
+            }
+        }
+
+        if (bestSearchResult == null) {
+            throw new BestResultNotFound(search);
+        }
+
+        return bestSearchResult;
+    }
+
+    private int countOccurrences(String text, String searchTerm) {
+        String str = text.toLowerCase();
+        String substring = searchTerm.toLowerCase();
+        int count = 0;
+        int index = 0;
+
+        while ((index = str.indexOf(substring, index)) != -1) {
+            count++;
+            index += substring.length();
+        }
+
+        return count;
+    }
+}
