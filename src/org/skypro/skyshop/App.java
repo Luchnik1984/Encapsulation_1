@@ -11,8 +11,7 @@ import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
 import java.util.List;
-import java.util.Map;
-
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -71,7 +70,6 @@ public class App {
 
         basket1.printBasket();
 
-
         System.out.println("\nДобавление статей и поиска. Тестирование поискового движка ");
 
         SearchEngine searchProduct = new SearchEngine();
@@ -90,15 +88,15 @@ public class App {
         System.out.println("\n<<< Демонстрация метода search >>>");
         System.out.println("\n<<< Результат поиска по запросу 'яблоки' >>>");
 
-        Map<String, Searchable> searchResult1 = searchProduct.search("яблоки");
+        Set<Searchable> searchResult1 = searchProduct.search("яблоки");
         searchProduct.printResults(searchResult1);
 
         System.out.println("\n<<< Результат поиска по запросу 'колбаса' >>>");
-        Map<String, Searchable> searchResult2 = searchProduct.search("колбаса");
+        Set<Searchable> searchResult2 = searchProduct.search("колбаса");
         searchProduct.printResults(searchResult2);
 
         System.out.println("\n<<< Результат поиска по запросу 'хлеб' >>>");
-        Map<String, Searchable> searchResult3 = searchProduct.search("хлеб");
+        Set<Searchable> searchResult3 = searchProduct.search("хлеб");
         searchProduct.printResults(searchResult3);
 
         System.out.println("\n Проверка полей товаров: ");
@@ -143,7 +141,7 @@ public class App {
         basket3.addProduct(product4);
         basket3.printBasket();
         System.out.println("\n<<<Удаляем существующий продукт>>>");
-        List<Product> removedProducts1 = basket3.removedProductsByName("колбаса");
+        Set<Product> removedProducts1 = basket3.removedProductsByName("колбаса");
 
         System.out.println("\n<<<Выводим удалённый продукт>>>");
         basket3.printRemovedProducts(removedProducts1);
@@ -152,7 +150,7 @@ public class App {
         basket3.printBasket();
 
         System.out.println("\n<<<Удаляем несуществующий продукт>>>");
-        List<Product> removedProducts2 = basket3.removedProductsByName("горох");
+        Set<Product> removedProducts2 = basket3.removedProductsByName("горох");
 
         System.out.println("\n<<<Выводим удалённый продукт. Проверка что список пуст>>>");
         basket3.printRemovedProducts(removedProducts2);
@@ -161,15 +159,28 @@ public class App {
         basket3.printBasket();
 
         System.out.println("\n<<<Реализация метода поиска самого подходящего элемента>>>");
+        System.out.println("\n <<<Добавляем объекты в поисковый движок>>>");
 
         try {
             SearchEngine searchEngine2 = new SearchEngine();
-            searchEngine2.add(product1);
-            searchEngine2.add(product2);
-            searchEngine2.add(product3);
-            searchEngine2.add(article1);
-            searchEngine2.add(article4);
-            searchEngine2.add(product6);
+            // Обработка каждого добавления отдельно:
+            // Объекты для добавления собраны в список
+            //Каждый вызов add() обернут в try-catch
+            //При ошибке добавления одного элемента, продолжается попытка добавить следующие
+                        List<Searchable> itemsToAdd = List.of(
+                        product1, product2, product3,
+                        article1, article1,
+                        article4,
+                        product6, product6);
+
+                for (Searchable item : itemsToAdd) {
+                    try {
+                        searchEngine2.add(item);
+                    } catch (IllegalArgumentException | IllegalStateException e) {
+                        System.out.println("Ошибка при добавлении: " + e.getMessage());
+
+                    }
+                }
 
             System.out.println(" \nКогда нужный объект существует: ");
             Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");
