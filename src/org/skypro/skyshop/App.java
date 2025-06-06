@@ -10,6 +10,7 @@ import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
+import java.util.List;
 import java.util.Set;
 
 public class App {
@@ -162,13 +163,20 @@ public class App {
 
         try {
             SearchEngine searchEngine2 = new SearchEngine();
-            searchEngine2.add(product1);
-            searchEngine2.add(product2);
-            searchEngine2.add(product3);
-            searchEngine2.add(article1);
-            searchEngine2.add(article4);
-            searchEngine2.add(product6);
-            searchEngine2.add(product6);
+                        List<Searchable> itemsToAdd = List.of(
+                        product1, product2, product3,
+                        article1, article1,
+                        article4,
+                        product6, product6);
+
+                for (Searchable item : itemsToAdd) {
+                    try {
+                        searchEngine2.add(item);
+                    } catch (IllegalArgumentException | IllegalStateException e) {
+                        System.out.println("Ошибка при добавлении: " + e.getMessage());
+
+                    }
+                }
 
             System.out.println(" \nКогда нужный объект существует: ");
             Searchable bestResult1 = searchEngine2.findBestSearchResult("яблок");

@@ -10,16 +10,16 @@ public class SearchEngine {
 
 
     public void add(Searchable searchable) {
-        if (searchable==null ){
-            System.out.println("Нельзя добавить несуществующий объект!");
-            return;
+        if (searchable == null) {
+            throw new IllegalArgumentException("Нельзя добавить null-объект");
         }
-        if (searchables.contains(searchable)){
-            System.out.println("Объект '"+searchable+"' уже добавлен в поисковый движок. Повторное добавление не произведено!");
+        if (!searchables.add(searchable)) {
+            throw new IllegalStateException("Объект '" + searchable.getSearchTerm() + "' уже существует. Добавление дубликата не произведено!");
         }
         searchables.add(searchable);
         System.out.println("Объект '"+searchable.getSearchTerm()+ "' добавлен в поисковый движок");
-            }
+
+    }
 
 
     public Set<Searchable> search(String searchTerm) {
