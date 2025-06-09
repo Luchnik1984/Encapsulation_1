@@ -1,6 +1,5 @@
 package org.skypro.skyshop.basket;
 
-
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
@@ -94,7 +93,6 @@ public class ProductBasket {
 
     public void clearBasket() {
         products.clear();
-
     }
 
     public void printCheckingProductAvailable(String name) {
@@ -114,10 +112,8 @@ public class ProductBasket {
             if (entry.getKey().equalsIgnoreCase(name)) {
                 removedProducts.addAll(entry.getValue());// Добавляем все продукты из совпадения
                 iterator.remove(); // Безопасно удаляем запись
-
             }
         }
-
         return removedProducts;
     }
 
@@ -131,5 +127,4 @@ public class ProductBasket {
             System.out.println(product);
         }
     }
-
 }
