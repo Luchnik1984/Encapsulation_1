@@ -3,6 +3,7 @@ package org.skypro.skyshop.article;
 import org.skypro.skyshop.exeptions.BestResultNotFound;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
 
@@ -17,22 +18,18 @@ public class SearchEngine {
             throw new IllegalStateException("Объект '" + searchable.getSearchTerm() + "' уже существует. Добавление дубликата не произведено!");
         }
         searchables.add(searchable);
-        System.out.println("Объект '"+searchable.getSearchTerm()+ "' добавлен в поисковый движок");
+        System.out.println("Объект '" + searchable.getSearchTerm() + "' добавлен в поисковый движок");
 
     }
 
 
     public Set<Searchable> search(String searchTerm) {
-       Set<Searchable> results = new TreeSet<>(new SearchableComparator());
-        for (Searchable searchable : searchables) {
-            if (searchable != null &&
-                    searchable.getSearchTerm() != null &&
-                    searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results.add(searchable);
-            }
-        }
-        return results;
+        return searchables.stream()
+                .filter(searchable -> searchable != null && searchable.getSearchTerm() != null &&
+                        searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator())));
     }
+
 
     public void printResults(Set<Searchable> results) {
         int count = 0;
@@ -44,7 +41,7 @@ public class SearchEngine {
 
         for (Searchable result : results) {
             count++;
-            System.out.println("Результат поиска №" + count + ": "  + result);
+            System.out.println("Результат поиска №" + count + ": " + result);
         }
     }
 
