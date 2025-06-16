@@ -1,6 +1,5 @@
 package org.skypro.skyshop.basket;
 
-
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
@@ -15,34 +14,26 @@ public class ProductBasket {
         String name = product.getProductName();
         if (!products.containsKey(name)) {
             products.put(name, new HashSet<>());
-            out.println("Продукт '"+ name +"' Добавлен в корзину");
+            out.println("Продукт '" + name + "' Добавлен в корзину");
 
-        } else  {
-            out.println("Продукт '"+ name +"' уже есть в корзине, повторное добавление не выполнено!");
+        } else {
+            out.println("Продукт '" + name + "' уже есть в корзине, повторное добавление не выполнено!");
         }
         products.get(name).add(product);
     }
 
-    public int totalCostOfBasket() {
-        int totalCost = 0;
-        for (Set<Product> productSet : products.values()) {
-            for (Product product : productSet) {
-                totalCost += product.getCostOfProduct();
-            }
-        }
-        return totalCost;
+    private int totalCostOfBasket() {
+        return products.values().stream()
+                .flatMap(Set::stream)// направляем вложенные Set<Product> в один поток
+                .mapToInt(Product::getCostOfProduct)// преобразуем Product в int (стоимость)
+                .sum();
     }
 
-    public int countingSpecialProduct() {
-        int specialCount = 0;
-        for (Set<Product> productSet : products.values()) {
-            for (Product product : productSet) {
-                if (product.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        }
-        return specialCount;
+    private int countingSpecialProduct() {
+        return (int) products.values().stream()
+                .flatMap(Set::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public void printBasket() {
@@ -51,14 +42,14 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
+        products.values().stream()
+                .flatMap(Set::stream)
+                .forEach(out::println);// печатаем каждый продукт
 
-        for (Set<Product> productSet : products.values()) {
-            for (Product product : productSet) {
-                out.println(product);
-            }
-        }
         out.println("Итого: <" + totalCostOfBasket() + " руб.>" + " Всего товаров: "
-                + products.values().stream().mapToInt(Set::size).sum() + " шт.");
+                + products.values().stream()
+                .mapToInt(Set::size)
+                .sum() + " шт.");
         if (countingSpecialProduct() > 0) {
             out.println("Специальных товаров: " + countingSpecialProduct() + " шт.");
         }
@@ -70,31 +61,25 @@ public class ProductBasket {
             return;
         }
         out.println(" \nСейчас в корзине: ");
-        for (Set<Product> productSet : products.values()) {
-            for (Product product : productSet) {
-                out.println(product.getProductName());
-            }
-        }
+        products.values().stream()
+                .flatMap(Set::stream)
+                .map(Product::getProductName)
+                .forEach(out::println);
     }
 
     public void printTotalCostOfBasket() {
         out.println("Стоимость корзины = " + totalCostOfBasket() + " руб.");
     }
 
-    public boolean checkingProductAvailable(String name) {
-        for (Set<Product> productSet : products.values()) {
-            for (Product product : productSet) {
-                if (name.equalsIgnoreCase(product.getProductName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    private boolean checkingProductAvailable(String name) {
+        return products.values().stream()
+                .flatMap(Set::stream)
+                .anyMatch(product -> name.equalsIgnoreCase(product.getProductName()));
+
     }
 
     public void clearBasket() {
         products.clear();
-
     }
 
     public void printCheckingProductAvailable(String name) {
@@ -114,10 +99,8 @@ public class ProductBasket {
             if (entry.getKey().equalsIgnoreCase(name)) {
                 removedProducts.addAll(entry.getValue());// Добавляем все продукты из совпадения
                 iterator.remove(); // Безопасно удаляем запись
-
             }
         }
-
         return removedProducts;
     }
 
@@ -127,9 +110,6 @@ public class ProductBasket {
             return;
         }
         System.out.println("Удаленные продукты:");
-        for (Product product : products) {
-            System.out.println(product);
-        }
+        products.forEach(out::println);
     }
-
 }
